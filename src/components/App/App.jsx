@@ -4,12 +4,13 @@ import { TaskForm } from '../TaskForm/TaskForm';
 import { TaskList } from '../TaskList/TaskList';
 import { useEffect } from 'react';
 import { fetchTasks } from '../../redux/operations';
+import { selectError, selectIsLoadimg } from '../../redux/tasksSlice';
 import css from './App.module.css';
 
 export default function App() {
   const dispatch = useDispatch();
-  const isLoading = useSelector(state => state.tasks.isLoading);
-  const error = useSelector(state => state.tasks.error);
+  const isLoading = useSelector(selectIsLoadimg);
+  const error = useSelector(selectError);
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -20,7 +21,7 @@ export default function App() {
       <AppBar />
       <TaskForm />
       {isLoading && !error && <b>Request in progress...</b>}
-      <TaskList />
+      {!isLoading && <TaskList />}
     </div>
   );
 }
